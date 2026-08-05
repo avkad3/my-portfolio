@@ -1,0 +1,26 @@
+---
+title: "Orbital Maneuver RL"
+description: "A custom Gymnasium environment for fuel-efficient low-thrust orbital satellite transfers using PPO reinforcement learning."
+date: "2025-11-01"
+tags: ["reinforcement-learning", "space", "ppo", "gymnasium"]
+tech: ["Python", "Gymnasium", "Stable Baselines3", "PPO"]
+github: "https://github.com/adityakumarvijay/orbital-rl"
+featured: true
+order: 8
+---
+
+## Overview
+
+Developed a custom reinforcement learning environment for autonomous satellite orbital transfers. The PPO agent learns fuel-efficient low-thrust maneuvers, outperforming classical Hohmann transfer solutions.
+
+## Results
+
+- **100% success rate** after 500K training steps
+- **12% better fuel efficiency** vs. classical Hohmann transfers
+- Generalizes to varying initial orbits and target altitudes
+
+## Technical Details
+
+- Custom Gymnasium environment with continuous action space
+- Physics simulation using orbital mechanics equations
+- Reward shaping for fuel efficiency + mission success

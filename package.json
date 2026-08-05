@@ -1,0 +1,33 @@
+{
+  "name": "my-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "next": "13.5.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "next-themes": "^0.2.1",
+    "contentlayer": "^0.3.4",
+    "next-contentlayer": "^0.3.4",
+    "@tailwindcss/typography": "^0.5.10",
+    "lucide-react": "^0.294.0",
+    "framer-motion": "^10.16.16",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.0"
+  }
+}

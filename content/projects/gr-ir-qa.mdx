@@ -1,0 +1,25 @@
+---
+title: "GR-IR Reconciliation QA Agent"
+description: "A RAG-based QA system for enterprise GR-IR reconciliation documents using ChromaDB and Azure OpenAI."
+date: "2025-03-01"
+tags: ["rag", "enterprise", "document-intelligence", "qa"]
+tech: ["FastAPI", "Azure OpenAI", "LangChain", "ChromaDB"]
+github: "https://github.com/adityakumarvijay/gr-ir-qa"
+featured: false
+order: 5
+---
+
+## Overview
+
+Enterprise-grade question-answering system for Goods Receipt / Invoice Receipt reconciliation documents. Enables automated compliance querying and document intelligence.
+
+## Architecture
+
+- **ChromaDB Vector Search**: Semantic retrieval over chunked documents
+- **Azure OpenAI**: GPT-4 for answer generation with source attribution
+- **PDF Pipeline**: Extraction, chunking, and embedding generation
+
+## Results
+
+- 94% semantic accuracy on reconciliation Q&A
+- Reduced manual document review time by 60%
