@@ -1,15 +1,6 @@
 # Aditya Kumar Vijay — Portfolio
 
-Built with **Next.js 14**, **Tailwind CSS**, **Contentlayer**, and **Framer Motion**.
-
-## Deploy to Vercel
-
-### Option 1: One-Click Deploy (Fastest)
-
-1. Push this folder to a GitHub repository
-2. Go to [vercel.com/new](https://vercel.com/new)
-3. Import your repository
-4. Click **Deploy**
+Built with **Next.js 14**, **Tailwind CSS**, **Contentlayer**, and **Framer 
 
 ### Option 2: CLI
 
