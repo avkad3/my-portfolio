@@ -2,27 +2,6 @@
 
 Built with **Next.js 14**, **Tailwind CSS**, **Contentlayer**, and **Framer 
 
-### Option 2: CLI
-
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy
-vercel --prod
-```
-
-## Local Development
-
-```bash
-# Install dependencies
-npm install
-
-# Run dev server
-npm run dev
-
-# Open http://localhost:3000
-```
 
 ## Project Structure
 
@@ -58,28 +37,7 @@ Edit `lib/data.ts` — all your info is centralized there.
 
 Create a new `.mdx` file in `content/projects/`:
 
-```mdx
----
-title: "Your Project Name"
-description: "Short description"
-date: "2026-01-01"
-tags: ["tag1", "tag2"]
-tech: ["React", "Next.js"]
-github: "https://github.com/you/repo"
-demo: "https://demo.vercel.app"
-featured: true
-order: 5
----
 
-## Overview
-
-Write your project details here using Markdown.
-
-## Features
-
-- Feature one
-- Feature two
-```
 
 ### 3. Add a New Section
 
