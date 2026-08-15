@@ -52,7 +52,7 @@ Create a new `.mdx` file in `content/projects/`:
 
 ### 5. Connect a CMS (Future)
 
-Swap Contentlayer for Sanity, Contentful, or Notion API when you outgrow local files.
+Swap Contentlayer for Sanity, Contentful, or Notion API when you outgrow local files
 
 ## Tech Stack
 
