@@ -29,10 +29,6 @@ my-portfolio/
 
 ## Customization Guide
 
-### 1. Update Personal Info
-
-Edit `lib/data.ts` — all your info is centralized there.
-
 ### 2. Add a New Project
 
 Create a new `.mdx` file in `content/projects/`:
