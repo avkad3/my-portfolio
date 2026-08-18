@@ -29,12 +29,6 @@ my-portfolio/
 
 ## Customization Guide
 
-### 2. Add a New Project
-
-Create a new `.mdx` file in `content/projects/`:
-
-
-
 ### 3. Add a New Section
 
 1. Create `components/sections/your-section.tsx`
