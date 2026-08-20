@@ -2,31 +2,6 @@
 
 Built with **Next.js 14**, **Tailwind CSS**, **Contentlayer**, and **Framer 
 
-
-## Project Structure
-
-```
-my-portfolio/
-├── app/                    # Next.js App Router
-│   ├── page.tsx            # Home page (all sections)
-│   ├── layout.tsx          # Root layout + metadata
-│   ├── projects/           # Projects listing
-│   └── projects/[slug]/    # Dynamic project pages
-├── components/
-│   ├── ui/                 # Reusable UI components
-│   ├── sections/           # Page sections (Hero, About, etc.)
-│   ├── navbar.tsx
-│   ├── theme-provider.tsx
-│   └── theme-toggle.tsx
-├── content/
-│   └── projects/           # MDX project files (content-driven)
-├── lib/
-│   ├── utils.ts            # cn() helper
-│   └── data.ts             # Resume data (centralized)
-├── public/                 # Static assets
-└── contentlayer.config.ts  # Content parsing config
-```
-
 ## Customization Guide
 
 ### 3. Add a New Section
