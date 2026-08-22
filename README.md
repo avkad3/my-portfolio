@@ -4,11 +4,6 @@ Built with **Next.js 14**, **Tailwind CSS**, **Contentlayer**, and **Framer
 
 ## Customization Guide
 
-### 3. Add a New Section
-
-1. Create `components/sections/your-section.tsx`
-2. Import and add it to `app/page.tsx`
-
 ### 4. Add a Blog (Future)
 
 1. Add `BlogPost` to `contentlayer.config.ts`
