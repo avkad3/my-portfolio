@@ -8,8 +8,6 @@ node_modules
 out
 dist
 
-# Contentlayer
-.contentlayer
 
 # Misc
 .DS_Store
@@ -30,3 +28,9 @@ yarn-error.log*
 .idea
 *.swp
 *.swo
+
+# Assistant API
+assistant-api/__pycache__
+assistant-api/.venv
+assistant-api/knowledge.json
+*.tsbuildinfo
