@@ -11,6 +11,7 @@ import { SectionHeader } from "@/components/ui/section-header";
 import { getProject, projects, type Project } from "@/data/projects";
 import { cn } from "@/lib/cn";
 import { AsciiPreview } from "./ascii-preview";
+import { FingerprintDemo } from "./fingerprint-demo";
 import { OrderFlow } from "./order-flow";
 
 const Loading = ({ h }: { h: string }) => <div className={cn("panel dot-bg grid place-items-center font-mono text-[11px] text-dim", h)}>booting visualization…</div>;
@@ -85,7 +86,7 @@ function Stack({ items }: { items: string[] }) {
 function Chapter({ n, p, visual, reverse }: { n: string; p: Project; visual: ReactNode; reverse?: boolean }) {
   return (
     <article className="grid gap-10 border-t border-line py-16 md:py-24 lg:grid-cols-12 lg:gap-14" aria-labelledby={`p-${p.slug}`}>
-      <div className={cn("lg:col-span-5", reverse && "lg:order-2")}>
+      <div className={cn("min-w-0 lg:col-span-5", reverse && "lg:order-2")}>
         <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] text-muted">
           <span className="text-accent">{n}</span>
           <span className="h-px w-8 bg-line-strong" />
@@ -112,7 +113,7 @@ function Chapter({ n, p, visual, reverse }: { n: string; p: Project; visual: Rea
           </div>
         </Reveal>
       </div>
-      <Reveal delay={0.1} className={cn("lg:col-span-7", reverse && "lg:order-1")}>
+      <Reveal delay={0.1} className={cn("min-w-0 lg:col-span-7", reverse && "lg:order-1")}>
         {visual}
       </Reveal>
     </article>
@@ -125,8 +126,9 @@ export function Work() {
   const ascii = getProject("ascii-lab")!;
   const mofs = getProject("mini-order-fulfillment")!;
   const vault = getProject("buildvault-ai")!;
+  const gmci = getProject("maps-competitor-intelligence")!;
+  const more = [getProject("loan-eligibility")!, getProject("waste-classifier")!];
   const savic = projects.filter((p) => p.kind === "savic");
-  const archive = projects.filter((p) => p.kind === "archive");
 
   return (
     <section id="work" className="py-24 md:py-36" aria-label="Projects">
@@ -143,7 +145,6 @@ export function Work() {
         </div>
         <ul className="grid gap-px overflow-hidden rounded-md border border-line bg-line md:hidden">
           {projects
-            .filter((p) => p.kind !== "archive")
             .map((p) => (
               <li key={p.slug} className="bg-bg">
                 <Link href={p.caseStudy || p.private ? `/projects/${p.slug}` : "#work"} className="flex items-center justify-between gap-4 p-4">
@@ -218,14 +219,50 @@ export function Work() {
             }
           />
           <Chapter n="004" p={mofs} visual={<OrderFlow />} />
+          <Chapter n="005" p={gmci} reverse visual={<FingerprintDemo />} />
+
+          {/* More shipped systems */}
+          <div className="grid gap-px overflow-hidden rounded-md border border-line bg-line md:grid-cols-2">
+            {more.map((p, i) => (
+              <article key={p.slug} onPointerMove={trackGlow} className="glow flex flex-col bg-bg p-6 md:p-8" aria-labelledby={`p-${p.slug}`}>
+                <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] text-muted">
+                  <span className="text-accent">{String(6 + i).padStart(3, "0")}</span>
+                  <span className="h-px w-8 bg-line-strong" />
+                  <span className="uppercase">{p.status}</span>
+                </div>
+                <h3 id={`p-${p.slug}`} className="mt-5 text-[clamp(1.6rem,3vw,2.4rem)] font-medium leading-[0.95] tracking-[-0.03em]">
+                  {p.title.map((l) => (
+                    <span key={l} className="block">
+                      {l}
+                    </span>
+                  ))}
+                </h3>
+                <p className="mt-4 leading-relaxed text-fg/80">{p.tagline}</p>
+                <ul className="mt-5 space-y-1.5 text-sm text-muted">
+                  {p.features.slice(0, 5).map((f) => (
+                    <li key={f} className="flex gap-2">
+                      <span className="mt-[9px] h-px w-2.5 shrink-0 bg-accent" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+                <div className="mt-6">
+                  <Stack items={p.stack} />
+                </div>
+                <div className="mt-auto pt-8">
+                  <ProjectLinks p={p} />
+                </div>
+              </article>
+            ))}
+          </div>
 
           {/* BuildVault — private */}
-          <article className="grid gap-10 border-t border-line py-16 md:py-24 lg:grid-cols-12 lg:gap-14" aria-labelledby="p-buildvault-ai">
+          <article className="mt-16 grid gap-10 border-t border-line py-16 md:mt-24 md:py-24 lg:grid-cols-12 lg:gap-14" aria-labelledby="p-buildvault-ai">
             <div className="lg:col-span-5">
               <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] text-muted">
-                <span className="text-accent">005</span>
+                <span className="text-accent">008</span>
                 <span className="h-px w-8 bg-line-strong" />
-                <span>PRIVATE</span>
+                <span>PRIVATE · IN PRODUCTION</span>
               </div>
               <h3 id="p-buildvault-ai" className="mt-6 text-[clamp(2rem,4.2vw,3.5rem)] font-medium leading-[0.95] tracking-[-0.035em]">
                 <RevealLines lines={["BUILDVAULT-AI"]} />
@@ -256,7 +293,7 @@ export function Work() {
                     </div>
                   ))}
                 </div>
-                <p className="mt-8 text-dim">Implementation details are confidential. Happy to walk through it in conversation.</p>
+                <p className="mt-8 text-dim">In production use by a customer. Implementation details are confidential; happy to walk through it in conversation.</p>
               </div>
             </Reveal>
           </article>
@@ -286,36 +323,6 @@ export function Work() {
           </div>
         </div>
 
-        {/* Archive */}
-        <div className="mt-20">
-          <div className="mb-6 flex items-end justify-between">
-            <h3 className="label">/archive — more from the résumé</h3>
-          </div>
-          <ul className="border-t border-line">
-            {archive.map((p) => {
-              const inner = (
-                <>
-                  <span className="font-medium md:col-span-3">{p.name}</span>
-                  <span className="text-sm text-muted md:col-span-5">{p.tagline}</span>
-                  <span className="font-mono text-[11px] text-dim md:col-span-3">{p.stack.join(" · ")}</span>
-                  <span className="hidden justify-self-end md:block">{p.links.github ? <ArrowUpRight size={15} className="text-dim group-hover:text-accent" /> : null}</span>
-                </>
-              );
-              const cls = "group grid gap-2 border-b border-line py-5 transition-colors md:grid-cols-12 md:items-center md:gap-6";
-              return (
-                <li key={p.slug}>
-                  {p.links.github ? (
-                    <a href={p.links.github} target="_blank" rel="noreferrer" className={cn(cls, "hover:bg-white/[0.015]")}>
-                      {inner}
-                    </a>
-                  ) : (
-                    <div className={cls}>{inner}</div>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
       </div>
     </section>
   );

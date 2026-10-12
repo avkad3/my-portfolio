@@ -41,7 +41,7 @@ export const experience: Role[] = [
         title: "GR-IR reconciliation QA agent",
         project: "gr-ir-qa",
         points: [
-          "RAG pipeline answering GR-IR reconciliation questions",
+          "RAG question-answering service for GR-IR reconciliation questions",
           "ChromaDB retrieval with Azure OpenAI generation, served over FastAPI",
         ],
         stack: ["RAG", "FastAPI", "LangChain", "ChromaDB", "Azure OpenAI"],
@@ -51,7 +51,7 @@ export const experience: Role[] = [
         title: "AI-assisted reservation system + RCAE",
         project: "rcae-reservations",
         points: [
-          "Reservation platform with the Reservation Conflict Anticipation Engine",
+          "AI-assisted reservation platform; designed its Reservation Conflict Anticipation Engine",
           "Scores bookings on turnover clustering, cascade risk, kitchen load and dead time",
         ],
         stack: ["FastAPI", "React", "SQLite"],
@@ -72,8 +72,8 @@ export const experience: Role[] = [
         title: "Residential project delivery",
         points: [
           "Tracked residential project timelines",
-          "Coordinated with contractors and vendors",
-          "Exposure to construction workflows and quality-control processes",
+          "Coordinated contractors and vendors",
+          "Worked across construction and quality-control workflows",
         ],
         stack: [],
       },
@@ -91,8 +91,7 @@ export const experience: Role[] = [
         title: "Operations data & reporting",
         points: [
           "Managed operations data and reporting in Excel",
-          "Maintained project documentation",
-          "Supported coordination between internal teams and external stakeholders",
+          "Coordinated internal teams with external stakeholders",
         ],
         stack: ["Excel"],
       },

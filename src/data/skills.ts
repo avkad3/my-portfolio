@@ -14,21 +14,21 @@ export const stack: StackCategory[] = [
     id: "ml",
     code: "03",
     label: "ML / Data",
-    items: ["PyTorch Forecasting", "TFT", "LightGBM", "Stable Baselines3", "Gymnasium", "Pandas", "NumPy", "Polars", "OpenCV", "NetworkX", "Plotly", "Matplotlib", "Streamlit"],
+    items: ["PyTorch Forecasting", "TFT", "LightGBM", "Stable Baselines3", "Gymnasium", "Pandas", "NumPy", "OpenCV", "NetworkX", "Plotly", "Streamlit"],
   },
   {
     id: "backend",
     code: "04",
     label: "Backend",
-    items: ["FastAPI", "REST APIs", "WebSockets", "SQLAlchemy", "SQLite", "PostgreSQL", "MongoDB", "Redis"],
+    items: ["FastAPI", "REST APIs", "WebSockets", "SQLAlchemy", "SQLite", "PostgreSQL", "Redis"],
   },
-  { id: "tools", code: "05", label: "Tools", items: ["Docker", "Git", "GitHub", "pytest", "CI/CD", "Azure", "Render", "Google Colab"] },
+  { id: "tools", code: "05", label: "Tools", items: ["Docker", "Git", "GitHub", "pytest", "CI/CD", "Azure", "Render"] },
 ];
 
 /** Technology → projects that actually used it (derived, never hand-maintained). */
 export function projectsUsing(tech: string) {
   const t = tech.toLowerCase();
   return projects.filter((p) =>
-    p.stack.some((s) => s.toLowerCase() === t || (t === "azure" && s === "Azure OpenAI") || (t === "rest apis" && s === "FastAPI")),
+    p.stack.some((s) => s.toLowerCase() === t || (t === "azure" && s === "Azure OpenAI") || (t === "rest apis" && (s === "FastAPI" || s === "Flask"))),
   );
 }

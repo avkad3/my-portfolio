@@ -157,7 +157,6 @@ export default function SystemMap() {
             ["flagship", "Flagship"],
             ["system", "Systems"],
             ["savic", "SAVIC internship"],
-            ["archive", "Archive"],
           ] as const).map(([k, l]) => (
             <span key={k} className="flex items-center gap-1.5">
               <span className="h-2 w-2 rounded-full border" style={{ borderColor: KIND_COLOR[k] }} />

@@ -180,7 +180,6 @@ export function hashVector(text: string, dims = 32) {
 
 const ALL_TECH = Array.from(new Set([...stack.flatMap((c) => c.items), ...projects.flatMap((p) => p.stack)]));
 const TECH_ALIASES: Record<string, string> = {
-  "computer vision": "OpenCV",
   "vector database": "ChromaDB",
   pytorch: "PyTorch Forecasting",
   golang: "Go",
@@ -227,7 +226,17 @@ export function answerQuestion(query: string): Answer {
     };
   }
 
-  // 2. "Which projects use X?"
+  // 2a. Computer vision spans several libraries.
+  if (/(computer vision|\bvision\b|\bimage)/.test(q)) {
+    const cv = projects.filter((p) => p.stack.some((s) => ["OpenCV", "TensorFlow", "MobileNetV2"].includes(s)));
+    return {
+      answer: `Computer vision shows up in ${cv.length} projects:\n\n${cv.map((p) => `• ${p.name} — ${p.tagline}`).join("\n")}`,
+      sources: cv.map((p) => ({ title: p.name, href: `/projects/${p.slug}` })),
+      trace,
+    };
+  }
+
+  // 2b. "Which projects use X?"
   const tech = techIn(query);
   if (tech && !/(savic|intern)/.test(q)) {
     const t = tech.toLowerCase();
