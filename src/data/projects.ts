@@ -129,7 +129,7 @@ $ codeatlas serve . --with-trace`,
       "Green / yellow / red market status indicator",
       "Purchase-order upload and parsing",
       "Fuzzy matching of PO lines to the catalog",
-      "Modular data layer — seeded demo data today, live data tomorrow",
+      "Modular data layer — seeded demo data swappable for a live Serper.dev scraper",
     ],
     links: { github: `${GH}/CMPIS-Construction-Material-Price-Intelligence-System` },
     caseStudy: {
@@ -160,12 +160,14 @@ $ codeatlas serve . --with-trace`,
  Historical price data
  (seeded demo dataset)
 
-   optional: live scraper worker`,
+   optional: live scraper worker
+   (Serper.dev Shopping API)`,
       implementation: [
         "Streamlit frontend talks to a FastAPI backend over REST.",
         "Analytics, search and data collection are separate modules, so the seeded data layer can be swapped for live data without touching the UI.",
         "On first start a seeding process generates roughly six months of synthetic pricing history across products and vendors, so the analytics run without scraping.",
         "Plotly charts render price trends and vendor comparisons.",
+        "An optional live scraper worker pulls current prices from the Serper.dev Shopping API into the same data layer.",
       ],
       result: [
         "One screen answers: current price, cheapest vendor, six-month average, deviation and a buy signal.",
@@ -245,7 +247,7 @@ $ codeatlas serve . --with-trace`,
     stack: ["React", "TypeScript", "FastAPI", "SQLAlchemy", "Alembic", "JWT", "SQLite", "Recharts"],
     features: [
       "Customer purchase-order upload",
-      "Excel and PDF parsing",
+      "Excel and PDF parsing (pandas, openpyxl, pdfplumber)",
       "Material and stock validation",
       "Supplier approve / reject / partial approval",
       "Automatic sales order creation",
@@ -259,7 +261,7 @@ $ codeatlas serve . --with-trace`,
         "Many organisations still process purchase orders through email and spreadsheets: manual inventory checks, duplicate POs, inconsistent data, slow approvals and no visibility into order status.",
       approach: [
         "Model the opening stages of an enterprise order-to-cash flow as an explicit state machine.",
-        "Parse uploaded Excel and PDF purchase orders into structured line items.",
+        "Parse uploaded Excel and PDF purchase orders (pandas, openpyxl, pdfplumber) into structured line items.",
         "Validate materials against the catalog and stock against inventory before a human reviews anything.",
         "Let the supplier approve, reject or partially approve, then generate the sales order and reserve inventory automatically.",
       ],
@@ -302,12 +304,12 @@ $ codeatlas serve . --with-trace`,
     slug: "buildvault-ai",
     name: "BuildVault-AI",
     title: ["BUILDVAULT", "AI"],
-    tagline: "Business management system for builders and construction firms.",
+    tagline: "Business management system for builders and construction firms, in production use by a customer.",
     kind: "system",
     status: "in production",
     private: true,
     stack: [],
-    features: ["Business management for builders and construction firms"],
+    features: ["Business management for builders and construction firms", "In production use by a customer"],
     links: {},
   },
   {
@@ -463,51 +465,180 @@ $ codeatlas serve . --with-trace`,
       },
     },
   },
-  // ── Archive: further projects from the résumé ──────────────────────────────
+  // ── More shipped systems from GitHub ──────────────────────────────────────
   {
-    slug: "contextmesh",
-    name: "ContextMesh",
-    title: ["CONTEXTMESH"],
-    tagline: "Offline-first peer-to-peer mesh chat platform in Go.",
-    kind: "archive",
+    slug: "maps-competitor-intelligence",
+    name: "Google Maps Competitor Update Intelligence",
+    title: ["MAPS COMPETITOR", "INTELLIGENCE"],
+    tagline: "Scrapes competitors' Google Maps updates, de-duplicates them, analyses them with AI and drafts new posts.",
+    kind: "system",
     status: "shipped",
-    stack: ["Go", "WebSockets", "PostgreSQL", "Redis", "Docker"],
-    features: ["Real-time messaging", "Offline synchronisation", "Multi-hop mesh networking", "End-to-end encryption", "Conflict-free message sync"],
-    links: {},
+    stack: ["Python", "Flask", "Selenium", "SQLite", "Gemini", "Groq", "OpenRouter", "pytest", "Docker"],
+    features: [
+      "Selenium scraper for Google Maps Updates with structural card detection",
+      "Fingerprint-based duplicate detection across scrapes",
+      "CAPTCHA pause, continue and remote solve console (no bypass)",
+      "LLM topic classification with four providers and an offline fallback",
+      "Topic trends, monthly history and own-profile gap analysis",
+      "Idea and full-update generator with duplicate prevention",
+      "Keyword discovery of new competitors and scheduled re-scrapes",
+      "Dockerised with a Render blueprint",
+    ],
+    links: { github: `${GH}/Google_Maps_Competitor_Update_Intelligence` },
+    caseStudy: {
+      problem:
+        "Local businesses publish offers and news as Google Maps Updates, but there is no feed or export for competitors' posts. Tracking them means visiting every profile by hand, with no way to see which topics competitors push, how often, or what you are missing.",
+      approach: [
+        "Scrape each competitor's Updates tab with Selenium in a single Chrome session, paced and in an English locale.",
+        "Store every post once in a de-duplicated SQLite repository, even when several projects track the same competitor.",
+        "Classify posts with an LLM in batches against a fixed topic vocabulary so trend counts stay consistent.",
+        "Turn the repository into trends, gap analysis and new update ideas grounded in what competitors actually post.",
+      ],
+      architecture: `  competitor profiles (Google Maps)
+              │
+              ▼
+  Selenium scraper ──── CAPTCHA? ──▶ pause · screenshot
+  (structural cards)                 continue / skip / cancel
+              │
+              ▼
+  fingerprint: post id › URL › business + normalised text
+              │
+              ▼
+  SQLite repository (posts.fingerprint UNIQUE)
+              │
+     ┌────────┼──────────────┐
+     ▼        ▼              ▼
+  AI analysis  trends &     generator
+  (batches of  gap analysis (dedup: Jaccard ≥ 0.5,
+   15 posts)                 cosine ≥ 0.62)
+     │
+  Gemini → Groq → xAI → OpenRouter → offline analyser
+
+  Flask + Jinja UI · background jobs · scheduler`,
+      implementation: [
+        "Update cards are located structurally (a date label anchors the card, review blocks are excluded) instead of relying on Google's obfuscated class names.",
+        "Post fingerprints deliberately exclude dates, because Maps shows relative dates (\"3 weeks ago\") that change between scrapes; a re-scraped post only increments times_seen.",
+        "Verification pages are detected by URL, reCAPTCHA iframes and \"unusual traffic\" text; the job pauses and a person can solve it remotely through a click-through screenshot console.",
+        "Each provider's model list is fetched and the best model picked automatically; calls fail over in a configurable order with an offline analyser always last.",
+        "Generated updates are rejected if their headline or content overlaps earlier ideas, and each one records its similarity to the closest competitor post.",
+        "A demo dataset of fictional businesses keeps the full workflow testable without reaching Google.",
+      ],
+      result: [
+        "End-to-end pipeline: scrape → de-duplicate → analyse → trends → generate.",
+        "Works with no API keys at all, thanks to the offline analyser and demo source.",
+      ],
+      decisions: [
+        { title: "Never bypass CAPTCHAs", body: "Verification pauses the job instead of failing silently or calling a solving service; a human completes it, and the outcome is logged per competitor." },
+        { title: "One competitor, many projects", body: "A Maps profile is stored once and linked to projects, so its posts are collected and analysed once no matter who tracks it." },
+        { title: "Keys stay server-side", body: "AI keys live only in environment variables and are never sent to the browser, logged or stored." },
+      ],
+    },
   },
   {
-    slug: "neuralscript",
-    name: "NeuralScript",
-    title: ["NEURALSCRIPT"],
-    tagline: "A Python-like DSL for neural network training, RAG pipelines and LoRA fine-tuning.",
-    kind: "archive",
-    status: "shipped",
-    stack: ["Python", "Custom Parser"],
-    features: ["Abstracts NN training, RAG and LoRA fine-tuning", "Built-in think blocks for AI reasoning", "Custom parser for datasets, architectures and knowledge bases"],
-    links: { github: `${GH}/NeuralScript` },
+    slug: "loan-eligibility",
+    name: "Loan Eligibility Prediction",
+    title: ["LOAN ELIGIBILITY", "PREDICTION"],
+    tagline: "An MLOps pipeline around a Random Forest: tracked experiments, explainability, a fairness audit, an API and a dashboard.",
+    kind: "system",
+    status: "live",
+    stack: ["Python", "scikit-learn", "MLflow", "DVC", "SHAP", "LIME", "Fairlearn", "FastAPI", "Streamlit", "Docker", "CI/CD"],
+    features: [
+      "Tuned Random Forest classifier",
+      "Experiment tracking and model registry with MLflow",
+      "Data versioning with DVC",
+      "Global SHAP and per-prediction LIME explanations",
+      "Fairlearn audit with a Responsible AI report",
+      "FastAPI /predict service, Dockerised",
+      "Streamlit dashboard",
+      "GitHub Actions CI: tests, Ruff lint, version checks",
+    ],
+    links: { github: `${GH}/loan-eligibility-prediction`, live: "https://loan-eligibility-prediction-dfpa88fchykapafeu7keqc.streamlit.app/" },
+    caseStudy: {
+      problem:
+        "Most loan-prediction projects stop at a notebook accuracy score. The aim here was the surrounding engineering: reproducible experiments, explanations a reviewer can inspect, a fairness check, and a model that can actually be served.",
+      approach: [
+        "Train and tune a Random Forest, tracking every run and model in MLflow.",
+        "Version the dataset with DVC so experiments are reproducible.",
+        "Explain the model globally with SHAP and individual predictions with LIME.",
+        "Audit predictions with Fairlearn and document privacy, consent and fairness in a Responsible AI report.",
+        "Serve the model through FastAPI and a Streamlit dashboard, with CI on every push.",
+      ],
+      architecture: `  dataset (DVC-versioned)
+          │
+          ▼
+  feature prep → Random Forest (tuned)
+          │            │
+          │            ▼
+          │      MLflow runs + model registry
+          ▼
+  explainability: SHAP (global) · LIME (local)
+  fairness: Fairlearn audit → Responsible AI report
+          │
+     ┌────┴─────────────┐
+     ▼                  ▼
+  FastAPI /predict   Streamlit dashboard
+  (Docker)           (live)
+
+  GitHub Actions: API tests · Ruff · version checks`,
+      implementation: [
+        "The FastAPI service validates applications with a Pydantic schema and returns the decision with its eligibility probability.",
+        "CI loads the API and model, tests the health endpoint, and lints with Ruff on every push and pull request.",
+        "The fairness audit looks for sensitive attributes (gender, age, marital status and similar) and reports when the dataset has none rather than inventing a metric.",
+        "The Responsible AI report notes that the target was engineered from financial variables, so results are framed as an experimental evaluation, not a real lending system.",
+      ],
+      result: ["Live Streamlit dashboard and a containerised prediction API.", "Every run tracked, every prediction explainable."],
+    },
   },
   {
-    slug: "multi-agent-research",
-    name: "Multi-Agent AI Research System",
-    title: ["MULTI-AGENT", "RESEARCH"],
-    tagline: "LangGraph stateful agents with CrewAI task delegation for automated research.",
-    kind: "archive",
+    slug: "waste-classifier",
+    name: "Waste Image Classifier",
+    title: ["WASTE IMAGE", "CLASSIFIER"],
+    tagline: "Computer vision that sorts waste photos into six material classes, from a custom CNN to MobileNetV2 transfer learning.",
+    kind: "system",
     status: "shipped",
-    stack: ["LangGraph", "LangChain", "CrewAI", "FastAPI"],
-    features: ["Stateful LangGraph agents", "CrewAI task delegation", "Automated information gathering and synthesis", "Deployed via FastAPI"],
-    links: {},
-  },
-  {
-    slug: "orbital-rl",
-    name: "Orbital Maneuver RL",
-    title: ["ORBITAL", "MANEUVER RL"],
-    tagline: "A PPO agent that beat a classical Hohmann transfer on fuel efficiency.",
-    kind: "archive",
-    status: "shipped",
-    stack: ["Python", "Gymnasium", "Stable Baselines3", "PPO"],
-    features: ["Custom Gymnasium environment", "PPO trained over 500K steps", "12% better fuel efficiency than Hohmann transfer"],
-    metric: { value: "12%", label: "fuel efficiency vs Hohmann" },
-    links: {},
+    stack: ["Python", "TensorFlow", "MobileNetV2", "scikit-learn", "NumPy", "Matplotlib", "Streamlit"],
+    features: [
+      "Computer vision classification into cardboard, glass, metal, paper, plastic and trash",
+      "Custom CNN trained from scratch as a baseline",
+      "MobileNetV2 transfer learning (ImageNet weights)",
+      "Data augmentation and error analysis",
+      "Streamlit app returning the class and full probability distribution",
+    ],
+    links: { github: `${GH}/Waste-Image-Classifier` },
+    caseStudy: {
+      problem: "Manual waste sorting is slow and error-prone. The goal was a complete pipeline from image to prediction, not just a trained model and an accuracy number.",
+      approach: [
+        "Prepare and augment a six-class waste image dataset.",
+        "Train a custom CNN from scratch as a baseline.",
+        "Fine-tune MobileNetV2 pretrained on ImageNet with a new pooling, dense and dropout head.",
+        "Inspect misclassifications with error analysis, then serve the model in Streamlit.",
+      ],
+      architecture: `        waste image
+             │
+             ▼
+     preprocessing + augmentation
+             │
+             ▼
+   MobileNetV2 (ImageNet weights)
+             │
+             ▼
+   global average pooling
+             │
+             ▼
+     dense + dropout → softmax
+             │
+      ┌──────┴───────┐
+      ▼              ▼
+ predicted class   class probabilities
+             │
+             ▼
+      Streamlit interface`,
+      implementation: [
+        "Separate scripts for dataset preparation, training from scratch, transfer learning, prediction and error analysis.",
+        "The app returns the full probability distribution across all six classes, not only the top label.",
+      ],
+      result: ["A working upload-and-classify web app.", "Documented limits: small controlled dataset, fewer trash examples, sensitivity to lighting and cluttered backgrounds."],
+    },
   },
 ];
 

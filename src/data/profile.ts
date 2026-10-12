@@ -9,7 +9,7 @@ export const profile = {
   timezone: "Asia/Kolkata",
   email: "avkad3@gmail.com",
   summary:
-    "AI/ML and backend engineering student who ships working Python and Go systems involving LLM and RAG pipelines, forecasting, static analysis tooling and real-time web apps.",
+    "AI/ML and backend engineering student who ships working Python and Go systems: LLM and RAG pipelines, forecasting, static analysis tooling and real-time web apps. Published a Python package on PyPI and an algorithm on Zenodo.",
   focus: [
     "LLMs",
     "RAG",

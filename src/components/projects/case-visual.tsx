@@ -3,6 +3,7 @@
 import dynamic from "next/dynamic";
 import { RcaePlayground } from "@/components/lab/rcae-playground";
 import { AsciiPreview } from "./ascii-preview";
+import { FingerprintDemo } from "./fingerprint-demo";
 import { OrderFlow } from "./order-flow";
 
 const ph = () => <div className="panel dot-bg h-[480px]" />;
@@ -18,6 +19,8 @@ export function CaseVisual({ slug }: { slug: string }) {
       return <PriceChart />;
     case "mini-order-fulfillment":
       return <OrderFlow />;
+    case "maps-competitor-intelligence":
+      return <FingerprintDemo />;
     case "rcae-reservations":
       return <RcaePlayground />;
     case "ascii-lab":

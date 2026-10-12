@@ -127,7 +127,7 @@ export function Hero() {
         <div className="flex w-max animate-marquee gap-10 whitespace-nowrap font-mono text-[11px] uppercase tracking-[0.2em] text-dim">
           {Array.from({ length: 2 }).map((_, k) => (
             <div key={k} className="flex gap-10">
-              {["LLM pipelines", "RAG", "Forecasting", "Static analysis", "FastAPI", "Go", "Computer vision", "Reinforcement learning", `Now: ${now.focus}`, "Published on PyPI", "Published on Zenodo"].map((t) => (
+              {["LLM pipelines", "RAG", "Forecasting", "Static analysis", "FastAPI", "Go", "Computer vision", "MLOps", `Now: ${now.focus}`, "Published on PyPI", "Published on Zenodo"].map((t) => (
                 <span key={t} className="flex items-center gap-10">
                   {t}
                   <span className="text-accent">✦</span>

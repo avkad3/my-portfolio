@@ -10,7 +10,7 @@ import { caseStudies, getProject } from "@/data/projects";
 export const dynamicParams = false;
 
 /** Case studies with an interactive centrepiece (see CaseVisual). */
-const INTERACTIVE = new Set(["pycodeatlas", "cmpis", "mini-order-fulfillment", "rcae-reservations", "ascii-lab"]);
+const INTERACTIVE = new Set(["pycodeatlas", "cmpis", "mini-order-fulfillment", "rcae-reservations", "ascii-lab", "maps-competitor-intelligence"]);
 
 export function generateStaticParams() {
   return caseStudies.map((p) => ({ slug: p.slug }));
