@@ -1,68 +1,44 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config: Config = {
-  darkMode: ["class"],
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+  content: ["./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
+        bg: "#080808",
+        surface: "#0E0E0E",
+        raised: "#141414",
+        line: "#222222",
+        "line-strong": "#333333",
+        fg: "#F5F5F5",
+        muted: "#8A8A8A",
+        dim: "#5A5A5A",
+        accent: { DEFAULT: "#3DF2A6", soft: "#3DF2A61A", blue: "#5AB8FF" },
+        warn: "#F2C94C",
+        danger: "#FF5C5C",
       },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
+      fontFamily: {
+        sans: ["var(--font-display)", "system-ui", "sans-serif"],
+        mono: ["var(--font-mono)", "ui-monospace", "monospace"],
       },
-      animation: {
-        "fade-in": "fadeIn 0.5s ease-out",
-        "slide-up": "slideUp 0.5s ease-out",
-        "slide-down": "slideDown 0.3s ease-out",
+      fontSize: {
+        mega: ["clamp(3.25rem, 11vw, 10.5rem)", { lineHeight: "0.86", letterSpacing: "-0.045em" }],
+        giant: ["clamp(2.5rem, 7vw, 6.5rem)", { lineHeight: "0.9", letterSpacing: "-0.04em" }],
+        huge: ["clamp(2rem, 4.6vw, 4.25rem)", { lineHeight: "0.95", letterSpacing: "-0.035em" }],
       },
       keyframes: {
-        fadeIn: {
-          "0%": { opacity: "0" },
-          "100%": { opacity: "1" },
-        },
-        slideUp: {
-          "0%": { opacity: "0", transform: "translateY(20px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        slideDown: {
-          "0%": { opacity: "0", transform: "translateY(-10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
+        blink: { "0%,49%": { opacity: "1" }, "50%,100%": { opacity: "0" } },
+        pulseDot: { "0%,100%": { opacity: "1" }, "50%": { opacity: ".35" } },
+        marquee: { from: { transform: "translateX(0)" }, to: { transform: "translateX(-50%)" } },
+      },
+      animation: {
+        blink: "blink 1.1s step-end infinite",
+        pulseDot: "pulseDot 2.2s ease-in-out infinite",
+        marquee: "marquee 40s linear infinite",
       },
     },
   },
-  plugins: [require("@tailwindcss/typography")],
-}
+  plugins: [],
+};
 
-export default config
+export default config;
