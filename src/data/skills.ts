@@ -3,7 +3,7 @@ import { projects } from "./projects";
 export type StackCategory = { id: string; label: string; code: string; items: string[] };
 
 export const stack: StackCategory[] = [
-  { id: "lang", code: "01", label: "Languages", items: ["Python", "Go", "SQL"] },
+  { id: "lang", code: "01", label: "Languages", items: ["Python", "Go", "Rust", "SQL"] },
   {
     id: "genai",
     code: "02",

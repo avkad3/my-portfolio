@@ -8,8 +8,10 @@ export const profile = {
   location: "Mumbai, India",
   timezone: "Asia/Kolkata",
   email: "avkad3@gmail.com",
+  /** Shown in the hero status bar and given to the assistant. */
+  availability: { what: "6-month internship", when: "Jan–Jun 2027" },
   summary:
-    "AI/ML and backend engineering student who ships working Python and Go systems: LLM and RAG pipelines, forecasting, static analysis tooling and real-time web apps. Published a Python package on PyPI and an algorithm on Zenodo.",
+    "AI/ML and backend engineering student who ships working Python, Go and Rust systems: LLM and RAG pipelines, forecasting, static analysis tooling, a multilingual compiler and real-time web apps. Published a Python package on PyPI and an algorithm on Zenodo.",
   focus: [
     "LLMs",
     "RAG",
@@ -22,7 +24,7 @@ export const profile = {
   education: {
     school: "Pillai College of Engineering, Panvel",
     degree: "B.E. Computer Engineering",
-    specialization: "AI & Machine Learning",
+    specialization: "Artificial Intelligence & Data Science",
     period: "2023 — 2027",
   },
   certifications: [

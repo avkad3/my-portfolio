@@ -25,6 +25,8 @@ export type Project = {
   links: { github?: string; live?: string; pypi?: string; doi?: string };
   badge?: string;
   metric?: { value: string; label: string };
+  /** Real screenshot from the running project, served from /public/projects. */
+  screenshot?: { src: string; width: number; height: number; alt: string };
   caseStudy?: CaseStudy;
 };
 
@@ -51,6 +53,7 @@ export const projects: Project[] = [
       "Zero-config CLI, configurable via pyproject.toml",
     ],
     links: { github: `${GH}/CodeAtlas`, pypi: "https://pypi.org/project/pycodeatlas/" },
+    screenshot: { src: "/projects/pycodeatlas.webp", width: 1374, height: 710, alt: "CodeAtlas web UI showing the dependency graph with dead-code and uncovered panels" },
     caseStudy: {
       problem:
         "Deleting code in a real Python codebase is a gamble. Naive \"unused symbol\" checks miss dynamic calls made through getattr or decorators, and they flag framework routes as dead because nothing in the code calls them directly. Developers either leave dead code forever or break production removing it.",
@@ -132,6 +135,7 @@ $ codeatlas serve . --with-trace`,
       "Modular data layer — seeded demo data swappable for a live Serper.dev scraper",
     ],
     links: { github: `${GH}/CMPIS-Construction-Material-Price-Intelligence-System` },
+    screenshot: { src: "/projects/cmpis.webp", width: 1374, height: 1220, alt: "CMPIS product dashboard with the green buy signal, vendor stats and 180-day price history" },
     caseStudy: {
       problem:
         "Construction material prices vary significantly across suppliers and over time. Procurement teams compare quotations by hand, which is slow and makes it easy to overpay.",
@@ -198,6 +202,7 @@ $ codeatlas serve . --with-trace`,
       "Dockerised, tested with pytest, deployed on Render",
     ],
     links: { github: `${GH}/ASCII-Lab`, live: "https://ascii-lab.onrender.com/" },
+    screenshot: { src: "/projects/ascii-lab.webp", width: 1400, height: 900, alt: "ASCII Lab landing page with a live ASCII preview" },
     caseStudy: {
       problem:
         "Most ASCII converters are one-shot scripts: one character ramp, no dithering, no video. The goal was an interactive rendering platform that treats ASCII as a real rendering target.",
@@ -485,6 +490,7 @@ $ codeatlas serve . --with-trace`,
       "Dockerised with a Render blueprint",
     ],
     links: { github: `${GH}/Google_Maps_Competitor_Update_Intelligence` },
+    screenshot: { src: "/projects/maps-competitor-intelligence.webp", width: 1400, height: 900, alt: "Project dashboard with competitor counts, top topics and most used keywords" },
     caseStudy: {
       problem:
         "Local businesses publish offers and news as Google Maps Updates, but there is no feed or export for competitors' posts. Tracking them means visiting every profile by hand, with no way to see which topics competitors push, how often, or what you are missing.",
@@ -553,6 +559,7 @@ $ codeatlas serve . --with-trace`,
       "GitHub Actions CI: tests, Ruff lint, version checks",
     ],
     links: { github: `${GH}/loan-eligibility-prediction`, live: "https://loan-eligibility-prediction-dfpa88fchykapafeu7keqc.streamlit.app/" },
+    screenshot: { src: "/projects/loan-eligibility.webp", width: 1694, height: 1948, alt: "SHAP summary plot showing credit score, debt-to-income and income driving predictions" },
     caseStudy: {
       problem:
         "Most loan-prediction projects stop at a notebook accuracy score. The aim here was the surrounding engineering: reproducible experiments, explanations a reviewer can inspect, a fairness check, and a model that can actually be served.",
@@ -638,6 +645,198 @@ $ codeatlas serve . --with-trace`,
         "The app returns the full probability distribution across all six classes, not only the top label.",
       ],
       result: ["A working upload-and-classify web app.", "Documented limits: small controlled dataset, fewer trash examples, sensitivity to lighting and cluttered backgrounds."],
+    },
+  },
+  {
+    slug: "omnilang",
+    name: "OmniLang",
+    title: ["OMNI", "LANG"],
+    tagline: "A programming language and a RISC-V kernel that speak English, Hindi and Tamil — and keep each language's own word order.",
+    kind: "system",
+    status: "shipped",
+    stack: ["Rust", "C", "RISC-V", "QEMU", "LSP", "TypeScript", "VS Code", "CI/CD"],
+    features: [
+      "English, Hindi and Tamil keywords, mixable in one file",
+      "Word-order-aware parser: Hindi and Tamil put the verb last",
+      "Interpreter plus a C99 backend for native binaries",
+      "omni view --to hi renders any program in another language",
+      "Errors in your language, including word-order hints",
+      "Compile-time checks for Trojan Source, invisible characters and lookalike names",
+      "Language server and VS Code extension with transliteration",
+      "RISC-V kernel whose panic screen explains crashes in Hindi or Tamil",
+    ],
+    links: { github: `${GH}/Omnilang` },
+    screenshot: { src: "/projects/omnilang.webp", width: 800, height: 600, alt: "OmniLang RISC-V kernel panic screen explaining a write to read-only memory in Hindi" },
+    caseStudy: {
+      problem:
+        "Most people learning to program in India learn the ideas in their own language and the tools in English. Keyword-translation projects exist, but they keep English word order, can't share code across languages and still report errors in English.",
+      approach: [
+        "Define each language as a plain TOML keyword pack, so adding a language means adding one file.",
+        "Parse every pack into one language-neutral AST — nothing past the lexer records which human language was used.",
+        "Let each language keep its grammar: x लौटाओ। (\"x return\") in Hindi, x திருப்பு; in Tamil.",
+        "Reuse the AST for an interpreter, a multilingual view renderer and a C99 backend.",
+        "Take the idea down to bare metal: a RISC-V kernel whose crash screens use text shaped at build time.",
+      ],
+      architecture: `source (any mix of en / hi / ta)
+   │  lexer: UAX #31 identifiers, NFKC,
+   │  keyword lookup across packs, security checks
+   ▼
+language-neutral AST   ◄── no human language recorded
+   │  checker: types, scopes, glossary-aware names
+   ├──► interpreter        (omni run)
+   ├──► view renderer      (omni view --to xx)
+   └──► C99 backend        (omni c / omni build)
+
+crates/omni-core   compiler library
+crates/omni-cli    the omni binary + end-to-end tests
+crates/omni-lsp    language server
+editors/vscode     extension with generated grammar
+kernel/            RISC-V: boot, traps, Sv39 paging, panic screen`,
+      implementation: [
+        "Glossaries map names across languages (total = कुल = மொத்தம்), so three people can write one program in three languages.",
+        "Overflow and division by zero are errors, not undefined behaviour, in both the interpreter and the compiled C.",
+        "Mixed-script names (pаypal with a Cyrillic а), bidi control characters and zero-width characters are compile errors, following Unicode UTS #39.",
+        "Devanagari and Tamil need shaping, which a crashing kernel can't run, so the kernel's build.rs shapes and rasterizes every message ahead of time.",
+        "Released as downloads for Windows, macOS and Linux, with Scoop and Homebrew packages.",
+      ],
+      result: [
+        "About 60 unit and end-to-end tests: every example matches its recorded output in all three languages and as a native binary.",
+        "CI on Linux and Windows, plus a QEMU kernel boot matrix and a VS Code end-to-end test.",
+      ],
+      decisions: [
+        { title: "One AST, many surfaces", body: "Keeping the human language out of the AST is what makes translation between views, a single checker and a single code generator possible." },
+        { title: "Security as compile errors", body: "A language that accepts many scripts must stop code that looks different from what it does, so lookalikes and hidden characters fail the build instead of producing a warning." },
+        { title: "Data, not code", body: "Keywords and every diagnostic live in TOML, so native speakers can correct them without touching the compiler." },
+      ],
+      code: {
+        label: "the same function, three languages",
+        lang: "text",
+        body: `fn square(x: int) -> int {               // English
+    return x * x;
+}
+कार्य वर्ग(क: पूर्णांक) -> पूर्णांक {           // Hindi
+    क * क लौटाओ।
+}
+செயல்பாடு வர்க்கம்(எ: முழுஎண்) -> முழுஎண் {   // Tamil
+    எ * எ திருப்பு;
+}`,
+      },
+    },
+  },
+  {
+    slug: "netpulse",
+    name: "NetPulse",
+    title: ["NET", "PULSE"],
+    tagline: "A real-time internet weather station in Go: DNS, HTTP and TCP probes reported as sunny, cloudy, rainy or stormy.",
+    kind: "system",
+    status: "shipped",
+    stack: ["Go", "SQLite", "WebSockets", "REST APIs", "Docker", "CI/CD"],
+    features: [
+      "DNS, HTTP and TCP probes on per-target schedules",
+      "HTTP phase breakdown: DNS → connect → TLS → server → download",
+      "p50, p95, p99, jitter and uptime for every target",
+      "Bounded worker pool with overlap protection and jittered startup",
+      "Live dashboard over WebSockets, embedded in the binary",
+      "REST API for targets, results, stats, history and weather",
+      "Single static binary: pure-Go SQLite, no cgo",
+      "Small non-root Docker image with a built-in health check",
+    ],
+    links: { github: `${GH}/netpulse` },
+    screenshot: { src: "/projects/netpulse.webp", width: 1300, height: 1150, alt: "NetPulse dashboard with weather cards, latency sparklines and the HTTP phase breakdown" },
+    caseStudy: {
+      problem:
+        "\"Is the internet slow, or is it just this site?\" Uptime checkers answer up or down; they don't show where the time goes, how latency is distributed, or what overall conditions look like across many endpoints.",
+      approach: [
+        "Probe DNS resolvers, websites and TCP endpoints on independent schedules.",
+        "Time every HTTP request phase with httptrace on a fresh connection, so DNS, TLS and server time are separated.",
+        "Store every result and compute percentiles, jitter and uptime per target.",
+        "Summarise each target, and the whole set, as weather from the last 15 minutes of results.",
+      ],
+      architecture: `                 ┌──────────── scheduler ────────────┐
+ config ──► per-target tickers ──► job queue ──► N workers ──► probe (dns | http | tcp)
+                                                    │
+                                                    ▼
+                                         api.Server.HandleResult
+                                       ┌────────────┴────────────┐
+                                       ▼                         ▼
+                                SQLite store              WebSocket hub ──► dashboards
+                          (results, stats, history)    (drops slow clients)
+                                       ▲
+                     REST API ─────────┘`,
+      implementation: [
+        "Each target has its own ticker feeding a bounded worker pool, so a slow target never stacks up overlapping probes.",
+        "TCP connect time stands in for ping, because ICMP needs root.",
+        "SQLite runs in WAL mode with time-bucketed history and automatic retention pruning.",
+        "The WebSocket hub drops slow clients instead of letting one stalled browser block the fan-out.",
+        "Unknown config fields are rejected, so typos fail loudly.",
+      ],
+      result: [
+        "One static binary or one docker compose up gives a live dashboard on :8080.",
+        "Weather rules: sunny ≥ 99.5% uptime and p95 ≤ 250 ms; stormy below 80% uptime.",
+      ],
+      decisions: [
+        { title: "Fresh connection per HTTP probe", body: "Reusing connections would hide DNS, connect and TLS time, which are exactly the phases worth measuring." },
+        { title: "No cgo", body: "A pure-Go SQLite driver keeps the build a single cross-compilable binary with no C toolchain." },
+        { title: "Embedded dashboard", body: "Vanilla JS and canvas, embedded in the binary — no build step and no frontend dependencies." },
+      ],
+    },
+  },
+  {
+    slug: "maharashtra-election",
+    name: "Maharashtra Election Forecasting",
+    title: ["MAHARASHTRA", "ELECTION FORECAST"],
+    tagline: "A seat-level model for all 288 assembly seats that survives two parties splitting and switching alliances.",
+    kind: "system",
+    status: "shipped",
+    stack: ["Python", "scikit-learn", "Pandas", "NumPy", "Matplotlib", "pytest", "CI/CD"],
+    features: [
+      "Real constituency results from 2014, 2019 and 2024",
+      "Alliance-aware data model: each party mapped to a camp per election",
+      "Swing decomposition: last margin + statewide swing + seat deviation",
+      "Out-of-time back-test on the 2024 election",
+      "Monte Carlo simulator with correlated region, district and seat errors",
+      "2029 forecast under swing scenarios",
+    ],
+    links: { github: `${GH}/Maharashtra-Assembly-Election-Forecasting-ML-Project` },
+    metric: { value: "77.1%", label: "seats called in 2024 back-test" },
+    screenshot: { src: "/projects/maharashtra-election.webp", width: 1050, height: 600, alt: "2029 NDA seat forecast across statewide swing scenarios with 90% intervals" },
+    caseStudy: {
+      problem:
+        "Between 2019 and 2024, Shiv Sena and NCP both split and their halves joined opposite alliances. Seat-level margins between the two elections correlate at only 0.23, so a model that learns \"who won here last time\" breaks.",
+      approach: [
+        "Map every party to a camp per election, so SHS is NDA in 2019 while SHS (UBT) is UPA in 2024.",
+        "Model a seat's next margin as last margin + statewide swing + seat deviation, and learn only the deviation.",
+        "Treat the statewide swing as an input — the actual swing for back-testing, a scenario for the forecast.",
+        "Size uncertainty from out-of-sample residuals and simulate 5,000 elections.",
+      ],
+      architecture: `public results 2014 · 2019 · 2024  (same 2008 delimitation)
+                │
+                ▼
+   alliance-aware cleaning  (party → camp per election)
+                │
+                ▼
+   seat features: camp shares, lean, turnout, ENP,
+                  reservation, region, swing-projected margin
+                │
+      ┌─────────┴──────────┐
+      ▼                    ▼
+ Ridge: seat deviation   logistic: P(neither camp wins)
+      └─────────┬──────────┘
+                ▼
+   Monte Carlo × 5,000  (region · district · seat errors)
+                │
+                ▼
+   seat probabilities · seat-total intervals · P(majority ≥ 145)`,
+      implementation: [
+        "Trained on 2014 → 2019, selected by 5-fold CV, then back-tested out of time on 2019 → 2024.",
+        "Ridge was selected over random forest and gradient boosting on training-CV error.",
+        "Tests check that the cleaned data reproduces official tallies (BJP won 122, 105 and 132 seats).",
+        "The final model is refit on both labelled transitions for the 2029 forecast.",
+      ],
+      result: [
+        "77.1% of seats called correctly in the 2024 back-test, against 68.8% for uniform swing and 58.0% for persistence.",
+        "Reported honestly: the simulated 90% interval for NDA seats (175–209) missed the actual 235.",
+      ],
     },
   },
 ];

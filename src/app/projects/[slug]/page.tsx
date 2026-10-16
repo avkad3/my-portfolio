@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { CaseNav } from "@/components/projects/case-nav";
 import { CaseVisual } from "@/components/projects/case-visual";
+import { Screenshot } from "@/components/projects/screenshot";
 import { CopyCommand, ProjectLinks } from "@/components/projects/work";
 import { caseStudies, getProject } from "@/data/projects";
 
@@ -116,10 +117,10 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
         </div>
       ) : (
         <div className="container-os grid gap-10 lg:grid-cols-12">
-          <aside className="pt-20 lg:col-span-3">
+          <aside className="min-w-0 pt-20 lg:col-span-3">
             <CaseNav steps={steps} />
           </aside>
-          <div className="lg:col-span-9">
+          <div className="min-w-0 lg:col-span-9">
             <Block id="problem" n="01" label="Problem">
               <p className="max-w-3xl text-2xl leading-snug text-fg md:text-[1.9rem]">{cs.problem}</p>
             </Block>
@@ -145,6 +146,12 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
                   <CaseVisual slug={p.slug} />
                 </div>
               ) : null}
+              {p.screenshot ? (
+                <div className="mt-8">
+                  <div className="label mb-4 text-[10px]">From the running system</div>
+                  <Screenshot shot={p.screenshot} label={p.name} />
+                </div>
+              ) : null}
             </Block>
 
             <Block id="implementation" n="04" label="Implementation">
@@ -159,7 +166,7 @@ export default async function CaseStudyPage({ params }: { params: Promise<{ slug
               {cs.code ? (
                 <div className="panel mt-10 overflow-hidden">
                   <div className="border-b border-line px-4 py-2.5 font-mono text-[11px] text-muted">{cs.code.label}</div>
-                  <pre className="code p-5">{cs.code.body}</pre>
+                  <pre className="code overflow-x-auto p-5">{cs.code.body}</pre>
                 </div>
               ) : null}
               {cs.decisions?.length ? (

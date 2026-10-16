@@ -34,7 +34,7 @@ export function buildDocs(): Doc[] {
     kind: "contact",
     title: "Contact",
     href: "/#contact",
-    text: `Email ${profile.email}. GitHub ${profile.links.github}. LinkedIn ${profile.links.linkedin}. Location ${profile.location}. Hire, reach out, get in touch.`,
+    text: `Email ${profile.email}. GitHub ${profile.links.github}. LinkedIn ${profile.links.linkedin}. Location ${profile.location}. Open to a ${profile.availability.what}, ${profile.availability.when}. Hire, reach out, get in touch, internship availability.`,
   });
   for (const role of experience) {
     docs.push({

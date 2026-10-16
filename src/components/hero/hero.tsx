@@ -66,8 +66,12 @@ export function Hero() {
             </div>
           </div>
           <div>
-            <div className="text-dim">Currently</div>
-            <div className="mt-1 text-fg">Building intelligent systems</div>
+            <div className="text-dim">Available</div>
+            <div className="mt-1 text-accent">
+              {profile.availability.what}
+              <br />
+              {profile.availability.when}
+            </div>
           </div>
         </motion.div>
 

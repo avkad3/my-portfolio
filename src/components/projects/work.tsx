@@ -13,6 +13,7 @@ import { cn } from "@/lib/cn";
 import { AsciiPreview } from "./ascii-preview";
 import { FingerprintDemo } from "./fingerprint-demo";
 import { OrderFlow } from "./order-flow";
+import { Screenshot } from "./screenshot";
 
 const Loading = ({ h }: { h: string }) => <div className={cn("panel dot-bg grid place-items-center font-mono text-[11px] text-dim", h)}>booting visualization…</div>;
 const SystemMap = dynamic(() => import("./system-map"), { ssr: false, loading: () => <Loading h="h-[560px]" /> });
@@ -127,7 +128,9 @@ export function Work() {
   const mofs = getProject("mini-order-fulfillment")!;
   const vault = getProject("buildvault-ai")!;
   const gmci = getProject("maps-competitor-intelligence")!;
-  const more = [getProject("loan-eligibility")!, getProject("waste-classifier")!];
+  const omni = getProject("omnilang")!;
+  const netpulse = getProject("netpulse")!;
+  const more = [getProject("maharashtra-election")!, getProject("loan-eligibility")!, getProject("waste-classifier")!];
   const savic = projects.filter((p) => p.kind === "savic");
 
   return (
@@ -220,13 +223,27 @@ export function Work() {
           />
           <Chapter n="004" p={mofs} visual={<OrderFlow />} />
           <Chapter n="005" p={gmci} reverse visual={<FingerprintDemo />} />
+          <Chapter
+            n="006"
+            p={omni}
+            visual={
+              <div className="space-y-4">
+                <div className="panel overflow-hidden">
+                  <div className="border-b border-line px-4 py-2.5 font-mono text-[11px] text-muted">{omni.caseStudy?.code?.label}</div>
+                  <pre className="code overflow-x-auto p-5">{omni.caseStudy?.code?.body}</pre>
+                </div>
+                <Screenshot shot={omni.screenshot!} label="kernel panic screen · Hindi" />
+              </div>
+            }
+          />
+          <Chapter n="007" p={netpulse} reverse visual={<Screenshot shot={netpulse.screenshot!} label="netpulse · live dashboard" />} />
 
           {/* More shipped systems */}
-          <div className="grid gap-px overflow-hidden rounded-md border border-line bg-line md:grid-cols-2">
+          <div className="grid gap-px overflow-hidden rounded-md border border-line bg-line md:grid-cols-3">
             {more.map((p, i) => (
               <article key={p.slug} onPointerMove={trackGlow} className="glow flex flex-col bg-bg p-6 md:p-8" aria-labelledby={`p-${p.slug}`}>
                 <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] text-muted">
-                  <span className="text-accent">{String(6 + i).padStart(3, "0")}</span>
+                  <span className="text-accent">{String(8 + i).padStart(3, "0")}</span>
                   <span className="h-px w-8 bg-line-strong" />
                   <span className="uppercase">{p.status}</span>
                 </div>
@@ -260,7 +277,7 @@ export function Work() {
           <article className="mt-16 grid gap-10 border-t border-line py-16 md:mt-24 md:py-24 lg:grid-cols-12 lg:gap-14" aria-labelledby="p-buildvault-ai">
             <div className="lg:col-span-5">
               <div className="flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] text-muted">
-                <span className="text-accent">008</span>
+                <span className="text-accent">011</span>
                 <span className="h-px w-8 bg-line-strong" />
                 <span>PRIVATE · IN PRODUCTION</span>
               </div>
